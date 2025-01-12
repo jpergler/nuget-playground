@@ -19,11 +19,11 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Install GitVersion
-        run: dotnet tool install --global GitVersion.Tool
-
+        uses: gittools/actions/gitversion/setup@v0.9.15
+          
       - name: Use GitVersion
         id: gitversion
-        run: gitversion /output json /showvariable SemVer
+        run: gittools/actions/gitversion/execute@v0.9.15
 
       - name: Restore dependencies
         run: dotnet restore
