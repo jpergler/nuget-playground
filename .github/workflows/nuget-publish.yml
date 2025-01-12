@@ -19,11 +19,13 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0.9.15
+        uses: gittools/actions/gitversion/setup@v3.1.1
+        with:
+          versionSpec: '6.x'
           
       - name: Use GitVersion
         id: gitversion
-        run: gittools/actions/gitversion/execute@v0.9.15
+        run: gittools/actions/gitversion/execute@v3.1.1
 
       - name: Restore dependencies
         run: dotnet restore
