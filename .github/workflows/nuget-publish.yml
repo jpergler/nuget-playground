@@ -1,0 +1,38 @@
+name: Publish NuGet Package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install GitVersion
+        run: dotnet tool install --global GitVersion.Tool
+
+      - name: Use GitVersion
+        id: gitversion
+        run: gitversion /output json /showvariable SemVer
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build the project
+        run: dotnet build --configuration Release
+
+      - name: Pack the NuGet package
+        run: dotnet pack --configuration Release --output ./nupkgs /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }}
+
+      - name: Publish NuGet package
+        run: dotnet nuget push ./nupkgs/*.nupkg --source YOUR_NUGET_SOURCE --api-key ${{ secrets.NUGET_API_KEY }}
