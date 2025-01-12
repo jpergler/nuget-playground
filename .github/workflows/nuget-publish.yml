@@ -30,6 +30,7 @@ jobs:
         uses: gittools/actions/gitversion/execute@v3.1.1
         with:
           useConfigFile: true
+          configFilePath: GitVersion.yml
 
       - name: Restore dependencies
         run: dotnet restore
